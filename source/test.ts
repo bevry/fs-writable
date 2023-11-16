@@ -11,6 +11,11 @@ kava.suite('@bevry/fs-writable', function (suite, test) {
 		;(async function () {
 			equal(await isWritable(file), true, 'file is writable')
 			equal(await isWritable(dir), true, 'dir is writable')
+			equal(
+				await isWritable([file, dir]),
+				true,
+				'file and dir are both writable'
+			)
 			equal(await isWritable('missing'), false, 'missing file is not writable')
 		})()
 			.then(() => done())
@@ -20,6 +25,7 @@ kava.suite('@bevry/fs-writable', function (suite, test) {
 		;(async function () {
 			await writable(file)
 			await writable(dir)
+			await writable([file, dir])
 		})()
 			.then(() => done())
 			.catch((err: any) => done(err))
