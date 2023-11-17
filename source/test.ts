@@ -1,7 +1,9 @@
+// external
 import { equal, deepEqual } from 'assert-helpers'
 import kava from 'kava'
 
-import { writable, isWritable } from './index.js'
+// local
+import writable, { isWritable } from './index.js'
 
 const file = 'README.md'
 const dir = '.'
@@ -11,12 +13,12 @@ kava.suite('@bevry/fs-writable', function (suite, test) {
 		;(async function () {
 			equal(await isWritable(file), true, 'file is writable')
 			equal(await isWritable(dir), true, 'dir is writable')
-			equal(
-				await isWritable([file, dir]),
-				true,
-				'file and dir are both writable'
-			)
 			equal(await isWritable('missing'), false, 'missing file is not writable')
+			deepEqual(
+				await isWritable([file, dir, 'missing']),
+				[true, true, false],
+				'writable combination is as expected'
+			)
 		})()
 			.then(() => done())
 			.catch((err: any) => done(err))
